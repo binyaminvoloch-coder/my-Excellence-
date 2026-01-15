@@ -3,293 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הטבת הצטרפות לאקסלנס טרייד</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>מסחר עצמאי בבורסה | הטבת הצטרפות</title>
+    <!-- שימוש בפונט Heebo - הכי קרוב לפונט "פלוני" של המותג שהוא חינמי -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* איפוס והגדרות בסיס */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         :root {
-            --bg-dark: #0a1128;
-            --bg-lighter: #131d36;
-            --accent: #ff5a1f;
-            --accent-hover: #e04810;
-            --text-main: #ffffff;
-            --text-sub: #b0b8c4;
+            /* צבעים שנלקחו מקוד המקור של אקסלנס */
+            --bg-level0: #0f1939; /* כחול כהה מאוד */
+            --bg-level1: #111c3f; /* כחול ראשי */
+            --bg-level2: #293352; /* כחול בהיר יותר לקוביות */
+            --orange-btn: #ff4e31; /* כתום כפתורים */
+            --orange-hover: #d8562c;
+            --text-white: #ffffff;
+            --text-gray: #b0b8c4; /* טקסט משני */
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
         body {
             font-family: 'Heebo', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            overflow-x: hidden; /* מונע גלילה לצדדים */
+            background-color: var(--bg-level1);
+            color: var(--text-white);
+            line-height: 1.5;
+            overflow-x: hidden;
         }
 
-        /* כפתור גלובלי */
-        .btn-cta {
-            background-color: var(--accent);
+        a { text-decoration: none; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* כפתור ראשי - עיצוב זהה למקור */
+        .btn-primary {
+            background-color: var(--orange-btn);
             color: white;
-            padding: 18px 40px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-radius: 50px;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(255, 90, 31, 0.3);
-            border: none;
-            text-align: center;
-        }
-        .btn-cta:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 90, 31, 0.5);
-        }
-
-        /* לוגו */
-        nav {
-            padding: 20px;
-            text-align: center;
-            background: transparent;
-            position: absolute;
-            width: 100%;
-            z-index: 10;
-        }
-        .logo { font-weight: 900; font-size: 1.8rem; letter-spacing: -1px; }
-        .logo span { color: var(--accent); }
-
-        /* HERO - אזור עליון רחב */
-        .hero-section {
-            width: 100%;
-            min-height: 85vh; /* תופס כמעט את כל הגובה */
-            background: radial-gradient(circle at center, #1b2f5d 0%, var(--bg-dark) 80%);
-            display: flex;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 12px 32px;
+            border-radius: 200px; /* עיצוב ה"גלולה" של אקסלנס */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 78, 49, 0.3);
             text-align: center;
-            padding: 100px 20px 60px; /* מרווח מלמעלה ללוגו */
-            box-sizing: border-box;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 78, 49, 0.5);
+        }
+
+        .btn-full-mobile {
+            min-width: 200px;
+        }
+
+        /* HEADER */
+        header {
+            background-color: var(--bg-level1);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span { color: var(--orange-btn); }
+
+        /* HERO SECTION */
+        .hero {
+            background: radial-gradient(circle at center, #1b2f5d 0%, var(--bg-level0) 100%);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
-            max-width: 900px; /* רוחב תוכן מקסימלי */
+            max-width: 900px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
-        .hero-title {
+        .hero h1 {
             font-size: 3.5rem;
-            font-weight: 900;
+            font-weight: 700;
+            margin-bottom: 15px;
             line-height: 1.1;
-            margin-bottom: 20px;
         }
 
-        .hero-subtitle {
-            font-size: 1.4rem;
-            color: var(--text-sub);
+        .hero h2 {
+            font-size: 1.5rem;
             font-weight: 300;
+            color: var(--text-gray);
             margin-bottom: 40px;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .badge {
+        .hero-badge {
             background: rgba(255,255,255,0.1);
-            color: #ffd700;
-            padding: 8px 16px;
-            border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
             font-size: 0.9rem;
+            color: #ffd700;
             display: inline-block;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        /* תכונות - רחב מאוד */
-        .features-wrapper {
-            width: 100%;
-            background-color: var(--bg-dark);
-            padding: 20px 0 80px;
+        /* BENEFITS SECTION - Grid */
+        .benefits-section {
+            background-color: var(--bg-level2);
+            padding: 80px 20px;
         }
 
-        .features-container {
-            max-width: 1400px; /* מאפשר מתיחה לרוחב במסכים גדולים */
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+        }
+
+        .grid-cards {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 עמודות */
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
         }
 
-        .feature-card {
-            background: var(--bg-lighter);
-            padding: 40px 30px;
-            border-radius: 15px;
+        .card {
+            background: var(--bg-level1);
+            padding: 40px 25px;
+            border-radius: 15px; /* עיצוב הפינות של אקסלנס */
             text-align: center;
-            border-top: 4px solid var(--accent);
-            transition: 0.3s;
+            transition: transform 0.3s;
+            border: 1px solid transparent;
         }
-        .feature-card:hover { transform: translateY(-10px); }
-        
-        .feature-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 20px; }
-        .feature-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .feature-card p { color: var(--text-sub); line-height: 1.6; }
 
-        /* אזור הפירוט */
-        .list-section {
-            width: 100%;
-            background-color: #0e1629;
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255,255,255,0.1);
+            background: #1a264d;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            color: var(--orange-btn);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* OFFER SECTION */
+        .offer-section {
+            background-color: var(--bg-level0);
             padding: 80px 20px;
             text-align: center;
-            border-top: 1px solid #1c2a4a;
         }
 
-        .list-container {
+        .offer-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--orange-btn);
+            border-radius: 20px;
+            padding: 40px;
             max-width: 800px;
             margin: 0 auto;
         }
 
-        .benefit-item {
-            background: rgba(255,255,255,0.03);
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
+        .check-list {
             text-align: right;
-            border: 1px solid rgba(255,255,255,0.05);
+            max-width: 500px;
+            margin: 30px auto;
         }
 
-        .benefit-item i {
-            color: #00c853;
-            font-size: 1.5rem;
-            margin-left: 20px;
-            min-width: 30px; /* מיישר את האייקונים */
+        .check-list li {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-right: 30px;
         }
-        
-        .benefit-text { font-size: 1.2rem; font-weight: 500; }
+
+        .check-list li::before {
+            content: '✓';
+            color: var(--orange-btn);
+            font-weight: bold;
+            position: absolute;
+            right: 0;
+        }
 
         /* FOOTER */
         footer {
-            background: #000;
-            color: #555;
+            background-color: #080d1e;
             padding: 40px 20px;
             text-align: center;
             font-size: 0.8rem;
+            color: #666;
+            border-top: 1px solid #1c2a4a;
         }
-        footer p { max-width: 900px; margin: 10px auto; line-height: 1.5; }
 
-        /* --- התאמה למובייל (Mobile Responsive) --- */
+        footer p {
+            max-width: 900px;
+            margin: 10px auto;
+        }
+
+        /* MOBILE RESPONSIVE CSS */
         @media (max-width: 900px) {
-            .features-container {
+            .grid-cards {
                 grid-template-columns: 1fr; /* טור אחד במובייל */
-                max-width: 500px;
             }
-            .hero-title { font-size: 2.5rem; }
-        }
-
-        @media (max-width: 500px) {
-            /* כותרות */
-            .hero-title { font-size: 2.2rem; margin-bottom: 15px; }
-            .hero-subtitle { font-size: 1.1rem; margin-bottom: 30px; }
             
-            /* כפתורים למובייל - רחבים ונוחים */
-            .btn-cta { 
-                width: 100%; 
-                padding: 16px; 
-                font-size: 1.2rem;
-                box-sizing: border-box; /* מונע חריגה מהרוחב */
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero {
+                padding: 60px 20px;
             }
 
-            /* ריווחים */
-            .hero-section { padding-top: 120px; padding-bottom: 40px; min-height: auto; }
-            .features-wrapper { padding-top: 0; }
-            .feature-card { margin-bottom: 0; }
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .btn-full-mobile {
+                width: 100%;
+                display: flex;
+            }
             
-            /* רשימה */
-            .benefit-item { padding: 15px; }
-            .benefit-text { font-size: 1rem; }
+            .offer-box {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ניווט -->
-    <nav>
-        <div class="logo">Excellence<span>Trade</span></div>
-    </nav>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-text">Excellence<span>Trade</span></div>
+            <!-- כפתור "קבלת הצעה" כמו באתר המקורי -->
+            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-primary" style="padding: 8px 24px; font-size: 1rem;">
+                פתיחת חשבון
+            </a>
+        </div>
+    </header>
 
-    <!-- הירו (האזור הראשי) -->
-    <section class="hero-section">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="hero-content">
-            <div class="badge">🔥 הטבה מיוחדת: 100 ₪ מתנה</div>
-            <h1 class="hero-title">הכסף שלכם שווה יותר<br>באקסלנס טרייד</h1>
-            <h2 class="hero-subtitle">הפסיקו לשלם עמלות מטורפות לבנקים. עברו למסחר עצמאי מתקדם וקבלו הטבת הצטרפות בלעדית דרך הקישור הזה.</h2>
+            <div class="hero-badge">🔥 הטבה מיוחדת למצטרפים חדשים</div>
+            <h1>הדור הבא של<br>המסחר העצמאי</h1>
+            <h2>להפיק את המקסימום מכל פעולות המסחר באמצעות טכנולוגיה מתקדמת ועמלות נמוכות במיוחד.</h2>
             
-            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-cta">
-                אני רוצה לפתוח חשבון >>
-            </a>
-            <p style="font-size: 0.9rem; margin-top: 15px; opacity: 0.7;">הרשמה מאובטחת באתר | הפקדה החל מ-15K</p>
+            <div style="margin-top: 30px;">
+                <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-primary btn-full-mobile">
+                    לפתיחת חשבון וקבלת 100 ₪ מתנה
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 15px; color: var(--text-gray); opacity: 0.8;">
+                *פטור מדמי טיפול לשנתיים | הפקדה החל מ-15,000 ₪
+            </p>
         </div>
     </section>
 
-    <!-- קוביות (נמתח לרוחב המסך) -->
-    <div class="features-wrapper">
-        <div class="features-container">
-            <!-- קוביה 1 -->
-            <div class="feature-card">
-                <i class="fas fa-gift"></i>
-                <h3>הטבת הצטרפות</h3>
-                <p>קבלו <strong>100 ₪ מתנה</strong> ישירות לחשבון המסחר + פטור מלא מדמי טיפול לשנתיים שלמות.</p>
-            </div>
-            <!-- קוביה 2 -->
-            <div class="feature-card">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>מערכת מתקדמת</h3>
-                <p>אפליקציית Extrade Pro עם כלי AI, ניתוח דוחות וגרפים מתקדמים לקבלת החלטות בזמן אמת.</p>
-            </div>
-            <!-- קוביה 3 -->
-            <div class="feature-card">
-                <i class="fas fa-chart-pie"></i>
-                <h3>חיסכון ענק</h3>
-                <p>הלקוחות שלנו חוסכים עד 80% בעמלות ביחס לבנקים. יותר רווח נשאר אצלכם בכיס.</p>
-            </div>
-        </div>
-    </div>
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2 class="section-title">למה לעבור לאקסלנס?</h2>
+            <p class="section-subtitle">כל הכלים המתקדמים ביותר כדי שהכסף יעבוד בשבילך</p>
 
-    <!-- רשימת הטבות מפורטת -->
-    <section class="list-section">
-        <div class="list-container">
-            <h2 style="font-size: 2rem; margin-bottom: 30px;">מה אתם מקבלים בחבילה?</h2>
-            
-            <div class="benefit-item">
-                <i class="fas fa-check-circle"></i>
-                <div class="benefit-text">100 ₪ מתנה במזומן לחשבון (Cashback)</div>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-check-circle"></i>
-                <div class="benefit-text">פטור מדמי טיפול חודשיים למשך שנתיים (24 חודשים)</div>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-check-circle"></i>
-                <div class="benefit-text">קורס מסחר דיגיטלי מקצועי במתנה</div>
-            </div>
-            <div class="benefit-item">
-                <i class="fas fa-check-circle"></i>
-                <div class="benefit-text">חדר מסחר מקצועי ותמיכה מלאה בעברית</div>
+            <div class="grid-cards">
+                <!-- קוביה 1 -->
+                <div class="card">
+                    <i class="fas fa-percent card-icon"></i>
+                    <h3>חיסכון ענק בעמלות</h3>
+                    <p>חיסכון של עד 80% ביחס לעמלות הבנקים. משלמים פחות על כל פעולה ונשארים עם יותר רווח בכיס.</p>
+                </div>
+
+                <!-- קוביה 2 -->
+                <div class="card">
+                    <i class="fas fa-robot card-icon"></i>
+                    <h3>מערכת Extrade Pro</h3>
+                    <p>מערכת מסחר המאפשרת קבלת החלטות חכמות באמצעות טכנולוגיית AI, כלים תומכי החלטה ונתונים בזמן אמת.</p>
+                </div>
+
+                <!-- קוביה 3 -->
+                <div class="card">
+                    <i class="fas fa-graduation-cap card-icon"></i>
+                    <h3>קורס מסחר במתנה</h3>
+                    <p>מצטרפים חדשים מקבלים גישה לקורס מסחר מקצועי (למתחילים ומתקדמים) כדי ללמוד לנהל את ההון בחוכמה.</p>
+                </div>
+
+                <!-- קוביה 4 -->
+                <div class="card">
+                    <i class="fas fa-globe card-icon"></i>
+                    <h3>מסחר גלובלי</h3>
+                    <p>גישה ישירה למסחר בכ-125 שווקים ברחבי העולם, כולל וול סטריט, אירופה והמזרח.</p>
+                </div>
+
+                <!-- קוביה 5 -->
+                <div class="card">
+                    <i class="fas fa-headset card-icon"></i>
+                    <h3>חדר מסחר מקצועי</h3>
+                    <p>סוחרים מיומנים זמינים עבורך טלפונית בישראל ובארה"ב לתמיכה וביצוע עסקאות מורכבות.</p>
+                </div>
+
+                <!-- קוביה 6 -->
+                <div class="card">
+                    <i class="fas fa-gift card-icon"></i>
+                    <h3>הטבת הצטרפות</h3>
+                    <p>100 ₪ מתנה לחשבון (Cashback) + פטור מלא מדמי טיפול חודשיים למשך שנתיים.</p>
+                </div>
             </div>
 
-            <br>
-            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-cta">
-                לחצו כאן למעבר להרשמה המהירה >>
-            </a>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-primary btn-full-mobile">
+                    הצטרפו עכשיו וקבלו את ההטבה >>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- אותיות קטנות -->
+    <!-- Offer Detail Section -->
+    <section class="offer-section">
+        <div class="container">
+            <div class="offer-box">
+                <h2 style="font-size: 2rem; margin-bottom: 20px;">סיכום החבילה למצטרפים</h2>
+                <p style="color: var(--text-gray);">נרשמים דרך הקישור הזה, מפקידים 15,000 ₪ ומקבלים:</p>
+                
+                <ul class="check-list">
+                    <li><strong>100 ₪ מתנה</strong> לחשבון המסחר.</li>
+                    <li><strong>פטור מדמי טיפול</strong> למשך שנתיים (24 חודשים).</li>
+                    <li>מערכת מסחר מתקדמת <strong>Extrade Pro</strong>.</li>
+                    <li><strong>קורס מסחר</strong> דיגיטלי במתנה.</li>
+                </ul>
+
+                <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-primary btn-full-mobile">
+                    אני רוצה לפתוח חשבון
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer / Footer -->
     <footer>
-        <p><strong>גילוי נאות ומשפטי:</strong> אתר זה מופעל על ידי משווק שותפים עצמאי ואינו האתר הרשמי של בית ההשקעות אקסלנס/הפניקס.</p>
-        <p>כל הפעילות הפיננסית, לרבות פתיחת החשבון והפקדת הכספים, מתבצעת אך ורק באתר המאובטח של אקסלנס אליו מגיעים בלחיצה על הכפתורים בדף זה. ההטבה (100 ש"ח + פטור דמי טיפול) הינה למצטרפים חדשים בלבד, בהפקדה מינימלית של 15,000 ש"ח ובהתאם לתקנון החברה. ט.ל.ח. אין לראות במידע זה ייעוץ השקעות.</p>
+        <p><strong>גילוי נאות משפטי:</strong> אתר זה הינו דף נחיתה שיווקי המופעל על ידי משווק שותפים עצמאי ואינו האתר הרשמי של חברת אקסלנס נשואה או הפניקס בית השקעות.</p>
+        <p>כל הפעילות הפיננסית, פתיחת החשבון, זיהוי הלקוח והפקדת הכספים מתבצעים אך ורק באתר המאובטח והרשמי של אקסלנס, אליו תועברו בלחיצה על הכפתורים בדף זה.</p>
+        <p>ההטבה (100 ש"ח + פטור דמי טיפול + קורס) הינה למצטרפים חדשים בלבד, בכפוף להפקדה מינימלית של 15,000 ש"ח ובהתאם לתקנון המבצע המפורסם באתר החברה. ט.ל.ח. אין לראות במידע זה ייעוץ השקעות.</p>
+        <p style="margin-top: 20px; opacity: 0.5;">&copy; כל הזכויות שמורות למשווק המורשה.</p>
     </footer>
 
 </body>
