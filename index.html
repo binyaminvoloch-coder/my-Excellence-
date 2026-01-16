@@ -6,6 +6,24 @@
     <title>הצטרפות לאקסלנס טרייד | הטבה בלעדית</title>
     <meta name="description" content="הדור הבא של המסחר העצמאי. חשבון לילדים, צ'אט AI ומסחר אוטומטי. הטבת הצטרפות בלעדית: 100 ₪ מתנה.">
     
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1850422195841830');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1850422195841830&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+
     <!-- פונטים ואייקונים -->
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,7 +51,7 @@
 
         /* --- TradingView Widget Fix --- */
         .tradingview-widget-container {
-            position: sticky; /* או relative אם אתה לא רוצה שזה יזוז */
+            position: sticky;
             top: 0;
             z-index: 200;
             background: #000;
@@ -63,7 +81,7 @@
             backdrop-filter: blur(12px);
             padding: 15px 20px;
             position: sticky;
-            top: 0; /* מתחת לווידג'ט אם הוא לא סטיקי, אחרת לשחק עם זה */
+            top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--glass-border);
         }
@@ -137,6 +155,7 @@
             align-items: center;
             gap: 12px;
             transition: transform 0.2s;
+            cursor: pointer;
         }
         .btn-main:hover { transform: scale(1.05); }
 
@@ -152,7 +171,7 @@
             z-index: 10;
         }
         .card {
-            background: rgba(30, 41, 59, 0.7); /* כהה יותר */
+            background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(15px);
             padding: 35px 25px;
             border-radius: 24px;
@@ -174,7 +193,7 @@
             animation: float 4s ease-in-out infinite;
         }
 
-        /* --- SECTIONS --- */
+        /* --- SECTIONS (UPDATED BRIGHTNESS) --- */
         .section {
             padding: 80px 20px;
             max-width: 1000px;
@@ -188,29 +207,30 @@
             flex-wrap: wrap;
         }
         .section-text { flex: 1; min-width: 300px; }
+        
         .section-img { 
             flex: 1; 
             min-width: 300px; 
-            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); 
             height: 320px; 
             border-radius: 30px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255,255,255,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 6rem;
-            color: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.25);
+            text-shadow: 0 0 30px rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
         }
         
-        /* אלמנט דקורטיבי בתוך התמונה */
         .section-img::after {
             content: '';
             position: absolute;
             width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255,78,49,0.1) 0%, transparent 70%);
-            opacity: 0.5;
+            background: radial-gradient(circle, rgba(255,78,49,0.15) 0%, transparent 70%);
+            opacity: 0.6;
         }
 
         .section h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; line-height: 1.2; }
@@ -243,7 +263,7 @@
             .hero h1 { font-size: 2.5rem; }
             .section-flex { flex-direction: column; gap: 30px; }
             .section-img { width: 100%; height: 220px; font-size: 4rem; }
-            .section-flex.reverse { flex-direction: column; } /* ביטול היפוך במובייל */
+            .section-flex.reverse { flex-direction: column; } 
         }
     </style>
 </head>
@@ -280,7 +300,7 @@
                 <div class="logo">Excellence<span>Trade</span></div>
                 <div class="badge">משווק מורשה</div>
             </div>
-            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" style="border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; text-decoration: none; color: white; transition:0.3s;">
+            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" onclick="fbq('track', 'Lead');" style="border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; text-decoration: none; color: white; transition:0.3s;">
                 כניסה ללקוחות
             </a>
         </div>
@@ -294,7 +314,7 @@
         <h1>כל הכלים המתקדמים<br>בחשבון מסחר אחד.</h1>
         <p>מצטרפים לאקסלנס טרייד ומקבלים: אפליקציה עם AI, חשבון לילדים, עמלות נמוכות ופטור מדמי טיפול לשנתיים.</p>
         
-        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main">
+        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main" onclick="fbq('track', 'Lead');">
             אני רוצה לפתוח חשבון
             <i class="fas fa-arrow-left"></i>
         </a>
@@ -384,7 +404,7 @@
     <div style="text-align: center; padding: 60px 20px; background: linear-gradient(180deg, transparent, rgba(37, 99, 235, 0.1));">
         <h2 style="font-size: 2rem; margin-bottom: 15px;">השוק לא מחכה. ואתם?</h2>
         <p style="margin-bottom: 30px; font-size: 1.1rem; color: #ccc;">פתחו חשבון דיגיטלי ב-5 דקות וקבלו את ההטבה</p>
-        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main">
+        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main" onclick="fbq('track', 'Lead');">
             להרשמה וקבלת ההטבה >>
         </a>
     </div>
