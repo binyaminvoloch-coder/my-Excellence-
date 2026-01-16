@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>הצטרפות לאקסלנס טרייד | הטבה בלעדית</title>
+    <meta name="description" content="הדור הבא של המסחר העצמאי. חשבון לילדים, צ'אט AI ומסחר אוטומטי. הטבת הצטרפות בלעדית: 100 ₪ מתנה.">
+    
+    <!-- פונטים ואייקונים -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a1020;
+            --brand-orange: #ff4e31;
+            --brand-blue: #2563eb;
+            --text-white: #ffffff;
+            --text-gray: #9ca3af;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Heebo', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: var(--text-white); 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- TradingView Widget Fix --- */
+        .tradingview-widget-container {
+            position: sticky; /* או relative אם אתה לא רוצה שזה יזוז */
+            top: 0;
+            z-index: 200;
+            background: #000;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 78, 49, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 78, 49, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 78, 49, 0); }
+        }
+
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: rgba(10, 16, 32, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0; /* מתחת לווידג'ט אם הוא לא סטיקי, אחרת לשחק עם זה */
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+        .logo span { color: var(--brand-orange); }
+        .badge { font-size: 0.7rem; color: #888; letter-spacing: 0.5px; }
+
+        /* --- HERO --- */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 40%, #1e3a8a 0%, var(--bg-dark) 60%);
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .promo-pill {
+            background: rgba(255, 78, 49, 0.1);
+            border: 1px solid var(--brand-orange);
+            color: var(--brand-orange);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: slide-up 0.6s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slide-up 0.8s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 650px;
+            margin-bottom: 40px;
+            animation: slide-up 1s ease-out;
+        }
+
+        /* --- CTA BUTTON --- */
+        .btn-main {
+            background: linear-gradient(90deg, #ff4e31, #ff7e67);
+            color: white;
+            padding: 16px 45px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.3rem;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(255, 78, 49, 0.3);
+            animation: pulse-glow 2s infinite, slide-up 1.2s ease-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.2s;
+        }
+        .btn-main:hover { transform: scale(1.05); }
+
+        /* --- CARDS GRID --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: -60px auto 60px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7); /* כהה יותר */
+            backdrop-filter: blur(15px);
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--brand-orange);
+            background: rgba(30, 41, 59, 0.9);
+        }
+        .card-icon {
+            font-size: 3rem;
+            color: var(--brand-orange);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* --- SECTIONS --- */
+        .section {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .section-flex {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+        .section-text { flex: 1; min-width: 300px; }
+        .section-img { 
+            flex: 1; 
+            min-width: 300px; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
+            height: 320px; 
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            color: rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* אלמנט דקורטיבי בתוך התמונה */
+        .section-img::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,78,49,0.1) 0%, transparent 70%);
+            opacity: 0.5;
+        }
+
+        .section h2 { font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; line-height: 1.2; }
+        .tag { font-weight: 700; margin-bottom: 10px; display: block; letter-spacing: 1px; font-size: 0.9rem; text-transform: uppercase; }
+        
+        .section ul { margin-top: 20px; }
+        .section ul li { 
+            margin-bottom: 15px; 
+            font-size: 1.1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: #cbd5e1;
+        }
+        .section ul li i { color: #00ff88; font-size: 1rem; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #020408;
+            padding: 60px 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555;
+            border-top: 1px solid var(--glass-border);
+        }
+        footer p { max-width: 800px; margin: 10px auto; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .section-flex { flex-direction: column; gap: 30px; }
+            .section-img { width: 100%; height: 220px; font-size: 4rem; }
+            .section-flex.reverse { flex-direction: column; } /* ביטול היפוך במובייל */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- WIDGET: Live TradingView Ticker -->
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+        "symbols": [
+            { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+            { "proName": "FOREXCOM:NSXUSD", "title": "Nasdaq 100" },
+            { "description": "Apple", "proName": "NASDAQ:AAPL" },
+            { "description": "Nvidia", "proName": "NASDAQ:NVDA" },
+            { "description": "Tesla", "proName": "NASDAQ:TSLA" },
+            { "description": "Microsoft", "proName": "NASDAQ:MSFT" },
+            { "description": "Bitcoin", "proName": "BITSTAMP:BTCUSD" },
+            { "description": "Google", "proName": "NASDAQ:GOOGL" }
+        ],
+        "showSymbolLogo": true,
+        "isTransparent": false,
+        "displayMode": "adaptive",
+        "colorTheme": "dark",
+        "locale": "he_IL"
+        }
+        </script>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo-wrap">
+                <div class="logo">Excellence<span>Trade</span></div>
+                <div class="badge">משווק מורשה</div>
+            </div>
+            <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" style="border: 1px solid rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 50px; font-size: 0.9rem; text-decoration: none; color: white; transition:0.3s;">
+                כניסה ללקוחות
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="promo-pill">
+            🔥 הטבה מיוחדת: 100 ₪ מתנה בהצטרפות
+        </div>
+        <h1>כל הכלים המתקדמים<br>בחשבון מסחר אחד.</h1>
+        <p>מצטרפים לאקסלנס טרייד ומקבלים: אפליקציה עם AI, חשבון לילדים, עמלות נמוכות ופטור מדמי טיפול לשנתיים.</p>
+        
+        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main">
+            אני רוצה לפתוח חשבון
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.6;">*מינימום הפקדה 15,000 ₪ | ללקוחות חדשים בלבד</p>
+    </section>
+
+    <!-- CARDS GRID -->
+    <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-robot"></i></div>
+            <h3>בינה מלאכותית</h3>
+            <p>למה לנחש? קבלו ניתוח מניות בעברית בזמן אמת ע"י BridgeWise וקבלו החלטות חכמות.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-child"></i></div>
+            <h3>חשבון לילדים</h3>
+            <p>העניקו לילדים יתרון לחיים. חשבון מסחר עצמאי על שמם עם אפקט הריבית דריבית.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
+            <h3>השקעה אוטומטית</h3>
+            <p>הגדירו הוראת קבע חודשית לרכישת ניירות ערך ותנו לתיק לצמוח בשיטת "שגר ושכח".</p>
+        </div>
+    </div>
+
+    <!-- DETAILED SECTION 1: AI -->
+    <section class="section">
+        <div class="section-flex">
+            <div class="section-text">
+                <span class="tag" style="color: var(--brand-orange);">טכנולוגיה</span>
+                <h2>היתרון הלא הוגן שלכם בשוק</h2>
+                <p style="color: #ccc;">מערכת המסחר שלנו כוללת כלי תומך החלטה (AI) שיודע לנתח דוחות כספיים ולהציג תובנות פשוטות בעברית.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> דירוג מניות לפי פוטנציאל</li>
+                    <li><i class="fas fa-check-circle"></i> ניתוח פנדמנטלי בשניות</li>
+                    <li><i class="fas fa-check-circle"></i> זמין באפליקציה החדשה</li>
+                </ul>
+            </div>
+            <div class="section-img">
+                <i class="fas fa-brain"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAILED SECTION 2: KIDS (Reversed) -->
+    <section class="section">
+        <div class="section-flex reverse" style="flex-direction: row-reverse;">
+            <div class="section-text">
+                <span class="tag" style="color: #00ff88;">בלעדי באקסלנס</span>
+                <h2>במקום צעצועים - תנו להם עתיד</h2>
+                <p style="color: #ccc;">פתחו חשבון מסחר נפרד לילדים. הכסף נשאר בשליטתכם, אבל רשום על שמם וצובר תשואה לאורך שנים.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> חינוך פיננסי מגיל צעיר</li>
+                    <li><i class="fas fa-check-circle"></i> דמי ניהול מופחתים</li>
+                    <li><i class="fas fa-check-circle"></i> שליטה מלאה של ההורה</li>
+                </ul>
+            </div>
+            <div class="section-img">
+                <i class="fas fa-piggy-bank"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAILED SECTION 3: PRO TOOLS -->
+    <section class="section" style="border: none;">
+        <div class="section-flex">
+            <div class="section-text">
+                <span class="tag" style="color: #3b82f6;">למקצוענים</span>
+                <h2>כל הכלים לסוחר העצמאי</h2>
+                <p style="color: #ccc;">בין אם אתם משקיעים לטווח ארוך או סוחרים יומיים, בנינו מערכת שתומכת בכל הצרכים שלכם.</p>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>שברי מניות:</strong> קנו מניות יקרות בכל סכום (Extrade Pro)</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>סימולטור מס:</strong> תכנון מס חכם לפני ביצוע מכירה</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>אשראי למשיכה:</strong> עד 70,000 ₪ בריבית אטרקטיבית</li>
+                </ul>
+            </div>
+            <div class="section-img">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTTOM CTA -->
+    <div style="text-align: center; padding: 60px 20px; background: linear-gradient(180deg, transparent, rgba(37, 99, 235, 0.1));">
+        <h2 style="font-size: 2rem; margin-bottom: 15px;">השוק לא מחכה. ואתם?</h2>
+        <p style="margin-bottom: 30px; font-size: 1.1rem; color: #ccc;">פתחו חשבון דיגיטלי ב-5 דקות וקבלו את ההטבה</p>
+        <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-main">
+            להרשמה וקבלת ההטבה >>
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>גילוי נאות ומשפטי:</strong> אתר זה הינו דף נחיתה המופעל ע"י משווק שותפים מורשה ("המשווק") ואינו האתר הרשמי של אקסלנס/הפניקס בית השקעות.</p>
+        <p>המשווק מתוגמל על בסיס הצלחה. כל הפעולות הכספיות, זיהוי ופתיחת החשבון מתבצעים באתר המאובטח של אקסלנס בלבד. המידע בדף זה מבוסס על פרסומי החברה ועשוי להשתנות. ט.ל.ח.</p>
+        <p>השירותים (AI, מסחר לילדים וכו') כפופים לתנאי השימוש באפליקציה. ההטבה (100 ₪ + פטור דמי טיפול) מותנית בהפקדת 15,000 ₪ ומיועדת ללקוחות חדשים בלבד.</p>
+        <br>
+        <p>© 2026 Promo Page. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
