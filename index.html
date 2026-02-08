@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl" data-theme="light">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-23Y33HZZ9Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-23Y33HZZ9Z');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>הצטרפות לאקסלנס טרייד | השקעות חכמות למשפחה</title>
@@ -35,7 +43,8 @@
             --border-color: #e2e8f0;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --header-bg: rgba(255, 255, 255, 0.95);
-            --hero-overlay: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+            /* תיקון: Overlay כהה יותר כדי להפחית חיוורון */
+            --hero-overlay: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
         }
 
         [data-theme="dark"] {
@@ -47,7 +56,7 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow: 0 10px 40px rgba(0,0,0,0.4);
             --header-bg: rgba(10, 16, 32, 0.95);
-            --hero-overlay: linear-gradient(to bottom, rgba(10, 16, 32, 0.9), rgba(10, 16, 32, 0.8));
+            --hero-overlay: linear-gradient(to bottom, rgba(10, 16, 32, 0.8), rgba(10, 16, 32, 0.7));
         }
 
         @keyframes pulse-soft {
@@ -142,7 +151,8 @@
             max-width: 100%;
             background-image: var(--hero-overlay), url('hero-bg.webp');
             background-size: cover;
-            background-position: center;
+            /* תיקון: הנמכת התמונה ל-20% מלמעלה במקום מרכז */
+            background-position: center 20%; 
             background-attachment: fixed;
             border-bottom: 1px solid var(--border-color);
         }
@@ -224,29 +234,24 @@
     </style>
 </head>
 <body>
-
     <header>
         <div class="header-content">
             <button class="mobile-menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
-
             <a href="index.html" class="logo-area">
                 <div class="logo">Excellence<span>Trade</span></div>
                 <div class="badge">משווק מורשה</div>
             </a>
-
             <nav class="nav-links">
                 <a href="Investment portfolio.html"><i class="fas fa-briefcase"></i> תיק השקעות</a>
                 <a href="Compound interest.html"><i class="fas fa-chart-line"></i> ריבית דריבית</a>
                 <a href="Mortgage Calculator.html"><i class="fas fa-home"></i> משכנתא</a>
                 <a href="Currency conversion.html"><i class="fas fa-exchange-alt"></i> המרת מט"ח</a>
             </nav>
-
             <div class="header-actions">
                 <button class="theme-toggle" id="theme-btn"><i class="fas fa-adjust"></i></button>
                 <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="btn-login" onclick="fbq('track', 'Lead');">כניסה לחשבון</a>
             </div>
         </div>
-
         <div class="mobile-nav-overlay" id="mobileMenu">
             <a href="Investment portfolio.html" class="mobile-nav-link"><i class="fas fa-briefcase"></i> ניהול תיק השקעות</a>
             <a href="Compound interest.html" class="mobile-nav-link"><i class="fas fa-chart-line"></i> מחשבון ריבית דריבית</a>
