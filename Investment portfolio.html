@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartTrade - תיק השקעות</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937;
+            --text-sec: #6b7280; --input-bg: #f9fafb; --border-color: #e5e7eb;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05); --accent: #3b82f6;
+            --green: #10b981; --red: #ef4444; --border-r: 16px;
+        }
+        [data-theme="dark"] {
+            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #e0e0e0;
+            --text-sec: #a0a0a0; --input-bg: #2c2c2c; --border-color: #333;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; transition: 0.3s; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card { background-color: var(--card-bg); border-radius: var(--border-r); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+        .flex-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        input, button { padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); outline: none; }
+        button { background: var(--accent); color: white; cursor: pointer; border: none; font-weight: bold; }
+        .ticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .ticker-card-wrapper { position: relative; height: 126px; border-radius: 12px; overflow: hidden; }
+        .delete-btn { position: absolute; top: 5px; left: 5px; z-index: 10; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; border: none; }
+        .table-wrapper { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { text-align: right; padding: 12px; border-bottom: 1px solid var(--border-color); }
+        .text-green { color: var(--green); font-weight: bold; }
+        .text-red { color: var(--red); font-weight: bold; }
+        .table-input { width: 80px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Smart<span>Trade</span> - תיק השקעות</h1>
+        <button onclick="toggleTheme()">🌗 ערכת נושא</button>
+    </header>
+
+    <section class="card">
+        <h2>רשימת מעקב בזמן אמת</h2>
+        <div class="flex-row">
+            <input type="text" id="tickerInput" placeholder="סימול (למשל NVDA)">
+            <button onclick="addTicker()">+ הוסף</button>
+        </div>
+        <div id="tickerGrid" class="ticker-grid"></div>
+    </section>
+
+    <section class="card">
+        <h2>ניהול פוזיציות בתיק</h2>
+        <div class="flex-row">
+            <input type="text" id="pTicker" placeholder="סימול" style="flex:1">
+            <input type="number" id="pPrice" placeholder="מחיר קנייה" style="flex:1">
+            <input type="number" id="pQty" placeholder="כמות" style="flex:1">
+            <button onclick="addToPortfolio()">הוסף לתיק</button>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>מניה</th><th>כמות</th><th>מחיר קנייה</th><th>מחיר נוכחי</th><th>שווי</th><th>רווח/הפסד</th><th>מחיקה</th>
+                    </tr>
+                </thead>
+                <tbody id="portfolioBody"></tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4"><b>סה"כ שווי תיק:</b></td>
+                        <td id="totalValue" style="font-weight:bold">$0.00</td>
+                        <td id="totalPL"></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script>
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || ['NASDAQ:AAPL'];
+    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
+    let marketPrices = {};
+    let theme = localStorage.getItem('theme') || 'light';
+
+    function toggleTheme() {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        renderWatchlist();
+    }
+
+    function addTicker() {
+        const val = document.getElementById('tickerInput').value.toUpperCase();
+        if(val && !watchlist.includes(val)) {
+            watchlist.push(val);
+            save(); renderWatchlist();
+        }
+    }
+
+    function removeTicker(t) {
+        watchlist = watchlist.filter(x => x !== t);
+        save(); renderWatchlist();
+    }
+
+    function renderWatchlist() {
+        const grid = document.getElementById('tickerGrid');
+        grid.innerHTML = '';
+        watchlist.forEach(s => {
+            const div = document.createElement('div');
+            div.className = 'ticker-card-wrapper';
+            div.innerHTML = `<button class="delete-btn" onclick="removeTicker('${s}')">×</button>
+                <div class="tradingview-widget-container">
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    {"symbol": "${s}", "width": "100%", "colorTheme": "${theme}", "isTransparent": false, "locale": "he_IL"}
+                    <\/script>
+                </div>`;
+            grid.appendChild(div);
+            // הטענה מחדש של הסקריפטים של הווידג'טים
+            const script = div.querySelector('script');
+            const newScript = document.createElement('script');
+            newScript.src = script.src;
+            newScript.innerHTML = script.innerHTML;
+            div.querySelector('.tradingview-widget-container').appendChild(newScript);
+        });
+    }
+
+    function addToPortfolio() {
+        const ticker = document.getElementById('pTicker').value.toUpperCase();
+        const price = parseFloat(document.getElementById('pPrice').value);
+        const qty = parseFloat(document.getElementById('pQty').value);
+        if(ticker && price && qty) {
+            portfolio.push({ id: Date.now(), ticker, price, qty });
+            if(!marketPrices[ticker]) marketPrices[ticker] = price;
+            save(); renderPortfolio();
+        }
+    }
+
+    function updatePrice(t, p) {
+        marketPrices[t] = parseFloat(p);
+        renderPortfolio();
+    }
+
+    function renderPortfolio() {
+        const body = document.getElementById('portfolioBody');
+        body.innerHTML = '';
+        let totalVal = 0, totalCost = 0;
+        portfolio.forEach(p => {
+            const curr = marketPrices[p.ticker] || p.price;
+            const val = curr * p.qty;
+            const cost = p.price * p.qty;
+            const pl = val - cost;
+            totalVal += val; totalCost += cost;
+            body.innerHTML += `<tr>
+                <td><b>${p.ticker}</b></td><td>${p.qty}</td><td>$${p.price}</td>
+                <td><input type="number" class="table-input" value="${curr}" onchange="updatePrice('${p.ticker}', this.value)"></td>
+                <td>$${val.toFixed(2)}</td>
+                <td class="${pl>=0?'text-green':'text-red'}">$${pl.toFixed(2)} (${((pl/cost)*100).toFixed(1)}%)</td>
+                <td><button onclick="removePortfolio(${p.id})" style="background:none; color:gray">🗑️</button></td>
+            </tr>`;
+        });
+        document.getElementById('totalValue').innerText = `$${totalVal.toFixed(2)}`;
+        const tPL = totalVal - totalCost;
+        document.getElementById('totalPL').innerHTML = `<span class="${tPL>=0?'text-green':'text-red'}">$${tPL.toFixed(2)}</span>`;
+    }
+
+    function removePortfolio(id) {
+        portfolio = portfolio.filter(p => p.id !== id);
+        save(); renderPortfolio();
+    }
+
+    function save() {
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    }
+
+    window.onload = () => {
+        document.documentElement.setAttribute('data-theme', theme);
+        renderWatchlist();
+        renderPortfolio();
+    };
+</script>
+</body>
+</html>
