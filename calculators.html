@@ -1,1 +1,241 @@
-ajfhfgg 
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מחשבון אחוזים: הנחות, מע"מ ושינוי באחוזים</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Assistant:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #E8F5E9;
+            --surface: #FFFFFF;
+            --bg: #F5F7F8;
+            --text: #1C1C1E;
+            --text-secondary: #6e6e73;
+            --border: #E5E5EA;
+            --radius: 20px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #81C784;
+                --primary-light: #1B5E20;
+                --surface: #1C1C1E;
+                --bg: #000000;
+                --text: #F2F2F7;
+                --text-secondary: #8E8E93;
+                --border: #38383A;
+            }
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Assistant', 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: var(--surface);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header a { text-decoration: none; color: var(--text); font-weight: 700; color: var(--primary); }
+        .header h1 { margin: 0; font-size: 1.2rem; color: var(--text); }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 { margin-top: 0; font-size: 1.1rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;}
+        .card h2 svg { width: 20px; height: 20px; fill: var(--primary); }
+
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+
+        input[type="number"] {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 1.2rem;
+            width: 100px;
+            flex-grow: 1;
+            color: var(--text);
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="number"]:focus { border-color: var(--primary); }
+
+        .result-box {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Roboto Mono', monospace;
+            min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .seo-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-top: 40px; text-align: right; }
+        .seo-text h3 { color: var(--text); margin-bottom: 5px; }
+
+        @media (max-width: 600px) {
+            .calc-row { flex-direction: column; align-items: stretch; gap: 15px; }
+            span { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="index.html">⬅ חזרה לדף הבית</a>
+        <h1>מחשבון אחוזים</h1>
+        <div style="width:24px"></div>
+    </div>
+
+    <div class="container">
+        
+        <div class="card">
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M7.5 11C9.43 11 11 9.43 11 7.5S9.43 4 7.5 4S4 5.57 4 7.5S5.57 11 7.5 11M7.5 6A1.5 1.5 0 0 1 9 7.5A1.5 1.5 0 0 1 7.5 9A1.5 1.5 0 0 1 6 7.5A1.5 1.5 0 0 1 7.5 6M16.5 13C14.57 13 13 14.57 13 16.5S14.57 20 16.5 20S20 18.43 20 16.5S18.43 13 16.5 13M16.5 18A1.5 1.5 0 0 1 15 16.5A1.5 1.5 0 0 1 16.5 15A1.5 1.5 0 0 1 18 16.5A1.5 1.5 0 0 1 16.5 18M19 5L5 19L6.41 20.41L20.41 6.41L19 5Z"/></svg>
+                אחוזים בסיסי
+            </h2>
+            <div class="calc-row">
+                <span>כמה זה</span>
+                <input type="number" id="p1_num" placeholder="%" oninput="calcPercent()">
+                <span>אחוז מתוך</span>
+                <input type="number" id="p1_total" placeholder="סכום" oninput="calcPercent()">
+            </div>
+            <div class="result-box" id="p1_res">0</div>
+        </div>
+
+        <div class="card">
+            <h2>🏷️ מחשבון הנחה</h2>
+            <div class="calc-row">
+                <span>מחיר מקורי</span>
+                <input type="number" id="d_price" placeholder="מחיר" oninput="calcDiscount()">
+                <span>עם הנחה של</span>
+                <input type="number" id="d_percent" placeholder="%" oninput="calcDiscount()">
+                <span>אחוזים</span>
+            </div>
+            <div class="result-box" id="d_res" style="flex-direction: column; font-size: 1.2rem;">
+                <span style="font-size: 0.9rem; opacity: 0.8;">מחיר סופי</span>
+                <span id="d_final" style="font-size: 1.8rem;">0</span>
+                <span style="font-size: 0.8rem; color: var(--text); opacity: 0.6; margin-top: 5px;">חסכתם: <span id="d_save">0</span></span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 הפרש באחוזים</h2>
+            <div class="calc-row">
+                <span>מ-</span>
+                <input type="number" id="c_from" placeholder="ישן" oninput="calcChange()">
+                <span>אל</span>
+                <input type="number" id="c_to" placeholder="חדש" oninput="calcChange()">
+            </div>
+            <div class="result-box" id="c_res">0%</div>
+        </div>
+
+        <div class="card">
+            <h2>🏛️ מחשבון מע"מ / מס</h2>
+            <div class="calc-row">
+                <span>מחיר</span>
+                <input type="number" id="v_price" placeholder="מחיר" oninput="calcVAT()">
+                <span>ועוד</span>
+                <input type="number" id="v_rate" placeholder="%" value="18" oninput="calcVAT()">
+                <span>אחוז מע"מ</span>
+            </div>
+            <div class="result-box" id="v_res">0</div>
+        </div>
+
+        <div class="seo-text">
+            <h3>למה להשתמש במחשבון אחוזים אונליין?</h3>
+            <p>חישובי אחוזים הם חלק בלתי נפרד מחיי היומיום – החל מחישוב טיפ במסעדה ועד להבנת הנחה בסוף עונה או חישוב המע"מ בחשבונית עסקי. הכלים שלנו מאפשרים לכם לבצע את כל החישובים הללו באופן מיידי ומדויק ישירות בדפדפן.</p>
+            <p>השתמשו ב<strong>מחשבון ההנחות</strong> כדי למצוא את המחיר הסופי לאחר הורדת אחוז מסוים, או ב<strong>מחשבון הפרש האחוזים</strong> כדי לראות את הצמיחה או הירידה בין שני ערכים.</p>
+        </div>
+
+    </div>
+
+    <script>
+        function calcPercent() {
+            const pct = parseFloat(document.getElementById('p1_num').value);
+            const val = parseFloat(document.getElementById('p1_total').value);
+            const res = document.getElementById('p1_res');
+            if(isNaN(pct) || isNaN(val)) { res.innerText = "0"; return; }
+            const final = (val * (pct / 100));
+            res.innerText = final.toLocaleString('he-IL', {maximumFractionDigits: 2});
+        }
+
+        function calcDiscount() {
+            const price = parseFloat(document.getElementById('d_price').value);
+            const off = parseFloat(document.getElementById('d_percent').value);
+            if(isNaN(price) || isNaN(off)) { 
+                document.getElementById('d_final').innerText = "0"; 
+                document.getElementById('d_save').innerText = "0"; 
+                return; 
+            }
+            const saved = price * (off / 100);
+            const final = price - saved;
+            document.getElementById('d_final').innerText = '₪' + final.toLocaleString('he-IL', {maximumFractionDigits: 2});
+            document.getElementById('d_save').innerText = '₪' + saved.toLocaleString('he-IL', {maximumFractionDigits: 2});
+        }
+
+        function calcChange() {
+            const oldV = parseFloat(document.getElementById('c_from').value);
+            const newV = parseFloat(document.getElementById('c_to').value);
+            const res = document.getElementById('c_res');
+            if(isNaN(oldV) || isNaN(newV)) { res.innerText = "0%"; return; }
+            if(oldV === 0) { res.innerText = "∞"; return; }
+            const change = ((newV - oldV) / oldV) * 100;
+            const sign = change > 0 ? "+" : "";
+            res.innerText = sign + change.toFixed(2) + "%";
+            res.style.color = change >= 0 ? "var(--primary)" : "#d32f2f";
+        }
+
+        function calcVAT() {
+            const price = parseFloat(document.getElementById('v_price').value);
+            const rate = parseFloat(document.getElementById('v_rate').value);
+            const res = document.getElementById('v_res');
+            if(isNaN(price) || isNaN(rate)) { res.innerText = "0"; return; }
+            const tax = price * (rate / 100);
+            const total = price + tax;
+            res.innerHTML = `<div style="display:flex; flex-direction:column"><span>סה"כ: ₪${total.toLocaleString('he-IL', {maximumFractionDigits: 2})}</span><span style="font-size:0.8rem; opacity:0.7">סכום המע"מ: ₪${tax.toLocaleString('he-IL', {maximumFractionDigits: 2})}</span></div>`;
+        }
+    </script>
+</body>
+</html>
