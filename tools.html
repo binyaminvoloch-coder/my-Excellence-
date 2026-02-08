@@ -12,24 +12,9 @@
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async></script>
 
     <style>
-        /* משתני עיצוב */
+        /* משתני עיצוב - ברירת מחדל בהירה */
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-sec: #a0a0a0;
-            --input-bg: #2c2c2c;
-            --border-color: #333;
-            
-            --accent: #3b82f6; 
-            --accent-sec: #8b5cf6;
-            --green: #10b981;
-            --red: #ef4444;
-            --shadow: 0 4px 6px rgba(0,0,0,0.3);
-            --border-r: 16px;
-        }
-
-        [data-theme="light"] {
+            /* ערכים לערכה בהירה (ברירת מחדל) */
             --bg-color: #f3f4f6;
             --card-bg: #ffffff;
             --text-main: #1f2937;
@@ -37,6 +22,24 @@
             --input-bg: #f9fafb;
             --border-color: #e5e7eb;
             --shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+            /* משתנים קבועים */
+            --accent: #3b82f6; 
+            --accent-sec: #8b5cf6;
+            --green: #10b981;
+            --red: #ef4444;
+            --border-r: 16px;
+        }
+
+        /* דריסה לערכה כהה */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-sec: #a0a0a0;
+            --input-bg: #2c2c2c;
+            --border-color: #333;
+            --shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         body {
@@ -300,7 +303,9 @@
     let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
     let marketDataSim = {}; // מאגר מחירים ידני
     let compoundChartInstance = null;
-    let currentTheme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light');
+    
+    // שינוי ברירת מחדל ל-light במידה ואין הגדרה שמורה
+    let currentTheme = localStorage.getItem('theme') || 'light';
 
     // --- אתחול ---
     window.onload = function() {
