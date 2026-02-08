@@ -12,18 +12,17 @@
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async></script>
 
     <style>
-        /* משתני עיצוב - ברירת מחדל בהירה */
+        /* משתני עיצוב - ברירת מחדל בהירה (Light Mode) */
         :root {
-            /* ערכים לערכה בהירה (ברירת מחדל) */
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-sec: #6b7280;
-            --input-bg: #f9fafb;
-            --border-color: #e5e7eb;
+            --bg-color: #f3f4f6;       /* רקע כללי בהיר */
+            --card-bg: #ffffff;        /* רקע כרטיסים לבן */
+            --text-main: #1f2937;      /* טקסט ראשי כהה */
+            --text-sec: #6b7280;       /* טקסט משני אפור */
+            --input-bg: #f9fafb;       /* רקע שדות קלט */
+            --border-color: #e5e7eb;   /* צבע גבול */
             --shadow: 0 4px 6px rgba(0,0,0,0.05);
 
-            /* משתנים קבועים */
+            /* צבעים קבועים */
             --accent: #3b82f6; 
             --accent-sec: #8b5cf6;
             --green: #10b981;
@@ -31,7 +30,7 @@
             --border-r: 16px;
         }
 
-        /* דריסה לערכה כהה */
+        /* דריסה לערכה כהה (רק אם מופעלת) */
         [data-theme="dark"] {
             --bg-color: #121212;
             --card-bg: #1e1e1e;
@@ -58,15 +57,31 @@
             padding-bottom: 50px;
         }
 
+        /* עיצוב כפתור חזרה למסך הבית */
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-sec);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        .home-link:hover {
+            color: var(--accent);
+        }
+        .home-link span { margin-left: 5px; font-size: 1.1rem; }
+
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        h1 { margin: 0; font-weight: 300; font-size: 1.8rem; }
+        h1 { margin: 0; font-weight: 300; font-size: 1.8rem; line-height: 1.2; }
         h1 span { color: var(--accent); font-weight: 700; }
         
         .theme-toggle {
@@ -77,6 +92,7 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 1.2rem;
+            margin-top: 10px;
         }
 
         .card {
@@ -132,13 +148,13 @@
         /* רשימת מעקב - עדכון לתצוגת ווידג'טים */
         .ticker-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* רוחב מותאם לווידג'ט */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
         }
 
         .ticker-card-wrapper {
             position: relative;
-            height: 126px; /* גובה הווידג'ט */
+            height: 126px;
             border-radius: 12px;
             overflow: hidden;
         }
@@ -202,6 +218,11 @@
 <div class="container">
     <header>
         <div>
+            <!-- קישור חזרה למסך הבית -->
+            <a href="index.html" class="home-link">
+                <span>🏠</span> חזרה למסך הבית
+            </a>
+            
             <h1>Smart<span>Trade</span></h1>
             <p style="color: var(--text-sec); font-size: 0.9rem; margin-top:5px;">מעקב מסחר וחישוב תשואות</p>
         </div>
@@ -219,7 +240,6 @@
             <button onclick="addTicker()">+ הוסף למעקב</button>
         </div>
         
-        <!-- כאן ייכנסו הווידג'טים -->
         <div id="tickerGrid" class="ticker-grid"></div>
     </section>
 
@@ -299,22 +319,23 @@
 
 <script>
     // --- משתנים גלובליים ---
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || ['NASDAQ:AAPL', 'NASDAQ:TSLA']; // ברירת מחדל
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || ['NASDAQ:AAPL', 'NASDAQ:TSLA']; 
     let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-    let marketDataSim = {}; // מאגר מחירים ידני
+    let marketDataSim = {}; 
     let compoundChartInstance = null;
     
-    // שינוי ברירת מחדל ל-light במידה ואין הגדרה שמורה
+    // קביעת ערכת הנושא:
+    // 1. אם יש משהו שמור בזיכרון (כי המשתמש שינה ידנית) - תשתמש בו.
+    // 2. אם אין כלום - תשתמש ב-'light' (התעלמות מוחלטת מהגדרות המחשב).
     let currentTheme = localStorage.getItem('theme') || 'light';
 
     // --- אתחול ---
     window.onload = function() {
+        // החלת ערכת הנושא מיד בטעינה
         applyTheme(currentTheme);
-        renderWatchlistWidgets(); // טעינת הווידג'טים
         
-        // אתחול מחירים ראשוני
+        renderWatchlistWidgets(); 
         initPrices();
-        
         renderPortfolio();
         setTimeout(calculateCompound, 500);
     };
@@ -329,6 +350,7 @@
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
         if(compoundChartInstance) updateChartColors();
+        // רענון הווידג'טים נדרש כדי לשנות את הצבע שלהם
         renderWatchlistWidgets();
     }
 
@@ -355,7 +377,7 @@
 
     function renderWatchlistWidgets() {
         const grid = document.getElementById('tickerGrid');
-        grid.innerHTML = ''; // ניקוי
+        grid.innerHTML = ''; 
 
         watchlist.forEach(symbol => {
             const wrapper = document.createElement('div');
@@ -399,7 +421,6 @@
         if (ticker && price && qty) {
             portfolio.push({ id: Date.now(), ticker, price, qty });
             
-            // אתחול מחיר שוק שווה למחיר קנייה
             if (!marketDataSim[ticker]) {
                 marketDataSim[ticker] = { price: price };
             }
@@ -422,7 +443,6 @@
     }
 
     function initPrices() {
-        // מאתחל את מחירי השוק לפי המחיר ההיסטורי/קנייה אם אין נתון
         portfolio.forEach(p => {
             if (!marketDataSim[p.ticker]) {
                 marketDataSim[p.ticker] = { price: p.price };
@@ -431,7 +451,6 @@
     }
 
     function updateManualPrice(ticker, newPrice) {
-        // עדכון מחיר ידני עבור כל הפוזיציות של אותו טיקר
         marketDataSim[ticker] = { price: parseFloat(newPrice) };
         renderPortfolio();
         calculateCompound();
@@ -444,7 +463,6 @@
         let totalCost = 0;
 
         portfolio.forEach(pos => {
-            // קבלת מחיר אחרון מעודכן או שימוש במחיר קנייה
             const currentPrice = marketDataSim[pos.ticker] ? parseFloat(marketDataSim[pos.ticker].price) : pos.price;
             
             const marketValue = currentPrice * pos.qty;
