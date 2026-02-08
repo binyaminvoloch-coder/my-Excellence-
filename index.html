@@ -6,7 +6,6 @@
     <title>הצטרפות לאקסלנס טרייד | השקעות חכמות למשפחה</title>
     <meta name="description" content="הדרך הבטוחה לעתיד פיננסי. חשבון מסחר מפוקח, חיסכון לילדים וכלים חכמים לניהול השקעות.">
     
-    <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -22,9 +21,6 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1548268389617997&ev=PageView&noscript=1"
     /></noscript>
-    <!-- End Meta Pixel Code -->
-
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -54,7 +50,6 @@
             --hero-overlay: linear-gradient(to bottom, rgba(10, 16, 32, 0.9), rgba(10, 16, 32, 0.8));
         }
 
-        /* --- Animations --- */
         @keyframes pulse-soft {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 78, 49, 0.4); }
             70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(255, 78, 49, 0); }
@@ -83,7 +78,6 @@
             line-height: 1.6;
         }
 
-        /* --- Header --- */
         header {
             background: var(--header-bg);
             backdrop-filter: blur(12px);
@@ -100,7 +94,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .logo-area { display: flex; align-items: center; gap: 8px; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-main); white-space: nowrap; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text-main); white-space: nowrap; text-decoration: none; }
         .logo span { color: var(--brand-orange); }
         .badge { 
             background: #e0f2fe; color: #0369a1; 
@@ -108,12 +102,11 @@
             font-weight: 600; white-space: nowrap;
         }
 
-        /* Nav & Mobile */
-        .nav-links { display: flex; gap: 25px; }
+        .nav-links { display: flex; gap: 20px; }
         .nav-links a {
             text-decoration: none; color: var(--text-main);
-            font-weight: 500; font-size: 0.95rem;
-            display: flex; align-items: center; gap: 6px;
+            font-weight: 500; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 5px;
         }
         .nav-links a:hover { color: var(--brand-orange); }
 
@@ -143,16 +136,14 @@
             padding: 8px 18px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.9rem;
         }
 
-        /* --- Hero Section with Image --- */
         .hero {
             padding: 80px 20px 60px;
             text-align: center;
             max-width: 100%;
-            /* טוען את התמונה hero-bg.webp מהתיקייה */
             background-image: var(--hero-overlay), url('hero-bg.webp');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* יוצר אפקט גלילה נעים */
+            background-attachment: fixed;
             border-bottom: 1px solid var(--border-color);
         }
         
@@ -178,7 +169,6 @@
             animation: pulse-soft 3s infinite;
         }
 
-        /* --- Cards --- */
         .features-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px; max-width: 1100px; margin: -40px auto 60px; padding: 0 20px;
@@ -199,7 +189,6 @@
         }
         [data-theme="dark"] .card-icon { color: var(--brand-orange); background: rgba(255, 78, 49, 0.1); }
         
-        /* --- Contact Section --- */
         .trust-section {
             background: var(--bg-card); border-top: 1px solid var(--border-color);
             padding: 60px 20px; text-align: center;
@@ -212,24 +201,22 @@
         .email-link {
             font-size: 1.3rem; font-weight: 700; color: var(--brand-blue);
             text-decoration: none; display: block; margin-top: 10px;
-            direction: ltr; /* מוודא שהמייל מוצג נכון באנגלית */
+            direction: ltr;
         }
         .email-link:hover { text-decoration: underline; }
         [data-theme="dark"] .email-link { color: #60a5fa; }
 
-        /* --- Footer --- */
         footer {
             background: var(--bg-card); border-top: 1px solid var(--border-color);
             padding: 40px 20px; text-align: center; font-size: 0.85rem; color: var(--text-muted);
         }
 
-        /* --- Mobile --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .header-actions .btn-login { display: none; }
             .hero h1 { font-size: 2.1rem; }
-            .features-grid { margin-top: 0; } /* מבטל חפיפה במובייל */
+            .features-grid { margin-top: 0; }
             .email-link { font-size: 1.1rem; }
         }
 
@@ -238,20 +225,19 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <header>
         <div class="header-content">
             <button class="mobile-menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
 
-            <div class="logo-area">
+            <a href="index.html" class="logo-area">
                 <div class="logo">Excellence<span>Trade</span></div>
                 <div class="badge">משווק מורשה</div>
-            </div>
+            </a>
 
             <nav class="nav-links">
-                <a href="tools.html"><i class="fas fa-chart-line"></i> כלים לסוחר</a>
-                <a href="calculators.html"><i class="fas fa-calculator"></i> מחשבונים</a>
-                <!-- הקישור החדש שנוסף -->
+                <a href="Investment portfolio.html"><i class="fas fa-briefcase"></i> תיק השקעות</a>
+                <a href="Compound interest.html"><i class="fas fa-chart-line"></i> ריבית דריבית</a>
+                <a href="Mortgage Calculator.html"><i class="fas fa-home"></i> משכנתא</a>
                 <a href="Currency conversion.html"><i class="fas fa-exchange-alt"></i> המרת מט"ח</a>
             </nav>
 
@@ -262,9 +248,9 @@
         </div>
 
         <div class="mobile-nav-overlay" id="mobileMenu">
-            <a href="tools.html" class="mobile-nav-link"><i class="fas fa-chart-line"></i> כלים לסוחר</a>
-            <a href="calculators.html" class="mobile-nav-link"><i class="fas fa-calculator"></i> מחשבונים פיננסיים</a>
-            <!-- הקישור החדש שנוסף למובייל -->
+            <a href="Investment portfolio.html" class="mobile-nav-link"><i class="fas fa-briefcase"></i> ניהול תיק השקעות</a>
+            <a href="Compound interest.html" class="mobile-nav-link"><i class="fas fa-chart-line"></i> מחשבון ריבית דריבית</a>
+            <a href="Mortgage Calculator.html" class="mobile-nav-link"><i class="fas fa-home"></i> מחשבון משכנתא</a>
             <a href="Currency conversion.html" class="mobile-nav-link"><i class="fas fa-exchange-alt"></i> המרת מט"ח</a>
             
             <a href="https://xnestrade.xnes.co.il/page/101?customerCode=6753d561" class="mobile-nav-link" style="color: var(--brand-orange);">
@@ -273,7 +259,6 @@
         </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="hero">
         <div class="hero-container">
             <div class="live-indicator"><div class="dot"></div> מחוברים לשוק ההון</div>
@@ -292,7 +277,6 @@
         </div>
     </section>
 
-    <!-- CARDS GRID -->
     <div class="features-grid">
         <div class="card">
             <div class="card-icon"><i class="fas fa-robot"></i></div>
@@ -311,7 +295,6 @@
         </div>
     </div>
 
-    <!-- CONTACT & TRUST -->
     <section class="trust-section">
         <h2 style="font-size: 1.8rem; margin-bottom: 15px; color: var(--text-main);">יש לכם שאלה? אנחנו כאן.</h2>
         <p style="margin-bottom: 30px; color: var(--text-muted);">אל תישארו עם ספקות. הצוות המקצועי שלנו זמין לכל שאלה במייל.</p>
@@ -319,7 +302,6 @@
         <div class="contact-box">
             <i class="far fa-envelope" style="font-size: 2rem; color: var(--brand-orange); margin-bottom: 10px;"></i>
             <div style="font-weight: 500;">כתבו לנו לכתובת:</div>
-            <!-- המייל המקצועי שלך -->
             <a href="mailto:support@smart-investing.co.il" class="email-link">
                 support@smart-investing.co.il
             </a>
@@ -327,16 +309,13 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <p><strong>גילוי נאות ומשפטי:</strong> אתר זה ("smart-investing.co.il") מופעל ע"י משווק שותפים מורשה. האתר משמש להפניה בלבד.</p>
         <p>כל הפעולות הכספיות, זיהוי הלקוח ופתיחת החשבון מתבצעים אך ורק באתר המאובטח והרשמי של אקסלנס טרייד / הפניקס בית השקעות.</p>
         <p>© 2026 Smart Investing. All rights reserved.</p>
     </footer>
 
-    <!-- JS -->
     <script>
-        // Toggle Mobile Menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
             const btn = document.querySelector('.mobile-menu-btn i');
@@ -345,7 +324,6 @@
             btn.classList.toggle('fa-times');
         }
 
-        // Theme Toggle Logic
         const themeBtn = document.getElementById('theme-btn');
         const htmlElement = document.documentElement;
 
