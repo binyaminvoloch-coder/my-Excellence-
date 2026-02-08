@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מחשבון משכנתא | החזר חודשי ולוח סילוקין</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #F8F9FF;
+            --surface: #FFFFFF;
+            --primary: #6750A4;
+            --on-surface: #1C1B1F;
+            --secondary-text: #49454F;
+            --accent: #D0BCFF;
+            --radius-xl: 28px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --border-light: 1px solid rgba(0,0,0,0.06);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #141218;
+                --surface: #1d1b20;
+                --primary: #D0BCFF;
+                --on-surface: #E6E1E5;
+                --secondary-text: #CAC4D0;
+                --border-light: 1px solid rgba(255,255,255,0.05);
+            }
+        }
+
+        body {
+            font-family: 'Assistant', 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--on-surface);
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        header { text-align: center; padding: 30px 20px; width: 100%; }
+        .back-link { 
+            text-decoration: none; color: var(--primary); font-weight: 700;
+            display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;
+        }
+
+        .container {
+            width: 90%; max-width: 800px;
+            background: var(--surface);
+            padding: 35px; border-radius: var(--radius-xl);
+            box-shadow: var(--shadow); border: var(--border-light);
+            margin-bottom: 30px;
+        }
+
+        .input-group { margin-bottom: 20px; text-align: right; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        input {
+            width: 100%; padding: 15px; border-radius: 15px;
+            border: 1px solid var(--accent); background: var(--bg-color);
+            color: var(--on-surface); font-size: 1rem; box-sizing: border-box; text-align: right;
+        }
+
+        .btn {
+            background: var(--primary); color: white;
+            padding: 18px; border-radius: 50px;
+            border: none; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px;
+            font-family: 'Assistant', sans-serif;
+        }
+        .btn:hover { opacity: 0.9; transform: scale(1.01); }
+
+        .result-card {
+            background: rgba(103, 80, 164, 0.05); padding: 25px;
+            border-radius: 20px; margin-top: 30px; display: none;
+            text-align: center;
+        }
+        .result-value { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 10px 0; }
+
+        .schedule-table {
+            width: 100%; border-collapse: collapse; margin-top: 30px;
+            font-size: 0.85rem; display: none; text-align: right;
+        }
+        .schedule-table th { background: var(--primary); color: white; padding: 12px; }
+        .schedule-table td { padding: 10px; border-bottom: var(--border-light); }
+
+        .seo-content {
+            width: 90%; max-width: 800px; margin: 50px 0;
+            line-height: 1.8; color: var(--secondary-text); text-align: right;
+        }
+
+        footer { padding: 30px; border-top: var(--border-light); width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link">⬅ חזרה למסך הבית</a>
+        <h1 style="margin-top: 10px; font-size: 1.8rem;">מחשבון משכנתא</h1>
+    </header>
+
+    <main class="container">
+        <div class="input-group">
+            <label>סכום ההלוואה (₪)</label>
+            <input type="number" id="amount" placeholder="לדוגמה: 1,000,000" value="1000000">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="input-group">
+                <label>ריבית שנתית (%)</label>
+                <input type="number" id="rate" step="0.1" value="4.5">
+            </div>
+            <div class="input-group">
+                <label>תקופת הלוואה (שנים)</label>
+                <input type="number" id="years" value="30">
+            </div>
+        </div>
+
+        <button class="btn" onclick="calculateMortgage()">חשב החזר חודשי</button>
+
+        <div id="resultArea" class="result-card">
+            <p>החזר חודשי משוער</p>
+            <div class="result-value" id="monthlyPayment">₪0.00</div>
+            <p style="font-size: 0.9rem; opacity: 0.7;">סה"כ ריבית שתשולם: <span id="totalInterest"></span></p>
+        </div>
+
+        <table id="scheduleTable" class="schedule-table">
+            <thead>
+                <tr>
+                    <th>שנה</th>
+                    <th>ריבית</th>
+                    <th>קרן</th>
+                    <th>יתרה</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody"></tbody>
+        </table>
+    </main>
+
+    <section class="seo-content">
+        <h2>איך להשתמש במחשבון המשכנתא?</h2>
+        <p>מתכננים את בית חלומותיכם? <strong>מחשבון המשכנתא</strong> שלנו עוזר לכם להעריך את ההחזרים החודשיים ולהבין כיצד ההלוואה שלכם מתפרסת לאורך זמן. פשוט הזינו את סכום ההלוואה, הריבית ותקופת הזמן כדי לקבל פירוט מיידי.</p>
+        
+        <h3>למה המחשבון שלנו?</h3>
+        <ul>
+            <li><strong>פרטיות מלאה:</strong> אנחנו לא שומרים את הנתונים הפיננסיים שלכם. כל החישובים מתבצעים בדפדפן שלכם בלבד.</li>
+            <li><strong>לוח סילוקין מפורט:</strong> ראו בדיוק כמה ריבית אתם משלמים בכל שנה.</li>
+            <li><strong>פשוט ומהיר:</strong> ממשק נקי ללא פרסומות מיותרות כדי שתוכלו להתרכז במספרים.</li>
+        </ul>
+
+        <h3>שאלות נפוצות</h3>
+        <p><strong>ש: האם ההחזר החודשי כולל ביטוחים ומיסים?</strong><br>
+        ת: לא, חישוב זה כולל קרן וריבית בלבד (P&I). ביטוחי משכנתא ועלויות נלוות אינם כלולים.</p>
+        
+        <p><strong>ש: איך הריבית משפיעה על ההלוואה שלי?</strong><br>
+        ת: אפילו הבדל של 1% בריבית יכול לחסוך או לעלות לכם עשרות אלפי שקלים לאורך 30 שנה.</p>
+
+        <p><strong>ש: האם אפשר להשתמש בזה להלוואות רכב?</strong><br>
+        ת: כן, המחשבון מתאים לכל הלוואה בריבית קבועה, כולל הלוואות לרכב או הלוואות אישיות.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 | <a href="index.html" style="color:var(--primary); text-decoration: none;">חזרה לדף הבית</a></p>
+    </footer>
+
+    <script>
+        function calculateMortgage() {
+            const P = parseFloat(document.getElementById('amount').value);
+            const annualRate = parseFloat(document.getElementById('rate').value);
+            const years = parseInt(document.getElementById('years').value);
+            
+            if (isNaN(P) || isNaN(annualRate) || isNaN(years)) return;
+
+            const r = annualRate / 100 / 12;
+            const n = years * 12;
+
+            const x = Math.pow(1 + r, n);
+            const monthly = (P * x * r) / (x - 1);
+            
+            document.getElementById('monthlyPayment').innerText = '₪' + monthly.toLocaleString('he-IL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            let balance = P;
+            let totalInterest = 0;
+            let scheduleHTML = '';
+
+            for (let i = 1; i <= years; i++) {
+                let yearlyInterest = 0;
+                let yearlyPrincipal = 0;
+                
+                for (let m = 1; m <= 12; m++) {
+                    let interestM = balance * r;
+                    let principalM = monthly - interestM;
+                    yearlyInterest += interestM;
+                    yearlyPrincipal += principalM;
+                    balance -= principalM;
+                }
+                
+                totalInterest += yearlyInterest;
+                scheduleHTML += `<tr>
+                    <td>שנה ${i}</td>
+                    <td>₪${yearlyInterest.toLocaleString('he-IL', {maximumFractionDigits:0})}</td>
+                    <td>₪${yearlyPrincipal.toLocaleString('he-IL', {maximumFractionDigits:0})}</td>
+                    <td>₪${Math.max(0, balance).toLocaleString('he-IL', {maximumFractionDigits:0})}</td>
+                </tr>`;
+            }
+
+            document.getElementById('totalInterest').innerText = '₪' + totalInterest.toLocaleString('he-IL', {maximumFractionDigits:0});
+            document.getElementById('scheduleBody').innerHTML = scheduleHTML;
+            
+            document.getElementById('resultArea').style.display = 'block';
+            document.getElementById('scheduleTable').style.display = 'table';
+            
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
