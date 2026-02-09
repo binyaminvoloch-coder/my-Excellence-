@@ -1,187 +1,541 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he" dir="rtl" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartTrade - תיק השקעות</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ניהול תיק השקעות אישי | SmartTrade</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --bg-color: #f3f4f6; --card-bg: #ffffff; --text-main: #1f2937;
-            --text-sec: #6b7280; --input-bg: #f9fafb; --border-color: #e5e7eb;
-            --shadow: 0 4px 6px rgba(0,0,0,0.05); --accent: #3b82f6;
-            --green: #10b981; --red: #ef4444; --border-r: 16px;
+            /* Palette - Matching the main site */
+            --primary-dark: #0f172a;
+            --primary-blue: #0056b3;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            
+            --success: #10b981;
+            --danger: #ef4444;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
         }
+
         [data-theme="dark"] {
-            --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #e0e0e0;
-            --text-sec: #a0a0a0; --input-bg: #2c2c2c; --border-color: #333;
+            --primary-dark: #f8fafc;
+            --primary-blue: #3b82f6;
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
         }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; transition: 0.3s; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .card { background-color: var(--card-bg); border-radius: var(--border-r); padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
-        .flex-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        input, button { padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); outline: none; }
-        button { background: var(--accent); color: white; cursor: pointer; border: none; font-weight: bold; }
-        .ticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .ticker-card-wrapper { position: relative; height: 126px; border-radius: 12px; overflow: hidden; }
-        .delete-btn { position: absolute; top: 5px; left: 5px; z-index: 10; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; border: none; }
-        .table-wrapper { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th, td { text-align: right; padding: 12px; border-bottom: 1px solid var(--border-color); }
-        .text-green { color: var(--green); font-weight: bold; }
-        .text-red { color: var(--red); font-weight: bold; }
-        .table-input { width: 80px; text-align: center; }
+
+        * { box-sizing: border-box; outline: none; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding-bottom: 40px;
+        }
+
+        /* --- Header Styling --- */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .logo span { color: var(--primary-blue); }
+
+        .btn-home {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--input-bg);
+            transition: all 0.2s;
+        }
+        .btn-home:hover { background: var(--border-color); color: var(--primary-dark); }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+        }
+        .theme-toggle:hover { background: rgba(0,0,0,0.05); }
+
+        /* --- Layout & Cards --- */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 15px; }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+        .section-title i { color: var(--primary-blue); }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+        }
+
+        /* --- Forms --- */
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        input {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            flex: 1;
+            min-width: 150px;
+        }
+        input:focus { border-color: var(--primary-blue); }
+
+        button.action-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        button.action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* --- Watchlist Grid --- */
+        .ticker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .ticker-card-wrapper {
+            position: relative;
+            height: 140px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            left: 8px; /* RTL fix */
+            z-index: 10;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .ticker-card-wrapper:hover .delete-btn { opacity: 1; }
+
+        /* --- Table --- */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: var(--input-bg);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: right;
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+        
+        tr:last-child td { border-bottom: none; }
+
+        .table-input {
+            width: 90px;
+            padding: 6px 10px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .text-green { color: var(--success); font-weight: 700; }
+        .text-red { color: var(--danger); font-weight: 700; }
+        
+        .row-actions button {
+            background: none; border: none; cursor: pointer;
+            color: var(--text-muted); font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .row-actions button:hover { color: var(--danger); }
+
+        tfoot td {
+            background: var(--input-bg);
+            font-weight: 700;
+            border-top: 2px solid var(--border-color);
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            header { padding: 12px 15px; }
+            .header-content { flex-direction: row-reverse; justify-content: space-between; }
+            .header-left { flex-direction: row-reverse; }
+            .logo { font-size: 1.2rem; }
+            .btn-home span { display: none; } /* Show icon only on mobile */
+            
+            .input-group { flex-direction: column; gap: 10px; }
+            input, button.action-btn { width: 100%; }
+            
+            .card { padding: 15px; }
+            .section-title { font-size: 1.1rem; }
+            
+            /* Table scroll indicator hint */
+            .table-container { 
+                position: relative;
+                box-shadow: inset 10px 0 10px -10px rgba(0,0,0,0.1);
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
     <header>
-        <h1>Smart<span>Trade</span> - תיק השקעות</h1>
-        <button onclick="toggleTheme()">🌗 ערכת נושא</button>
+        <div class="header-content">
+            <div class="header-left">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="החלף ערכת נושא">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="index.html" class="btn-home">
+                    <i class="fas fa-home"></i> <span>חזרה לבית</span>
+                </a>
+            </div>
+            <div class="logo">
+                <i class="fas fa-chart-line" style="color:var(--primary-blue)"></i>
+                Smart<span>Trade</span>
+            </div>
+        </div>
     </header>
 
-    <section class="card">
-        <h2>רשימת מעקב בזמן אמת</h2>
-        <div class="flex-row">
-            <input type="text" id="tickerInput" placeholder="סימול (למשל NVDA)">
-            <button onclick="addTicker()">+ הוסף</button>
-        </div>
-        <div id="tickerGrid" class="ticker-grid"></div>
-    </section>
+    <div class="container">
+        <!-- Watchlist Section -->
+        <section class="card">
+            <h2 class="section-title"><i class="far fa-eye"></i> רשימת מעקב (Watchlist)</h2>
+            <div class="input-group">
+                <input type="text" id="tickerInput" placeholder="הכנס סימול מניה (למשל: NVDA, AAPL)">
+                <button class="action-btn" onclick="addTicker()">
+                    <i class="fas fa-plus"></i> הוסף למעקב
+                </button>
+            </div>
+            <div id="tickerGrid" class="ticker-grid"></div>
+        </section>
 
-    <section class="card">
-        <h2>ניהול פוזיציות בתיק</h2>
-        <div class="flex-row">
-            <input type="text" id="pTicker" placeholder="סימול" style="flex:1">
-            <input type="number" id="pPrice" placeholder="מחיר קנייה" style="flex:1">
-            <input type="number" id="pQty" placeholder="כמות" style="flex:1">
-            <button onclick="addToPortfolio()">הוסף לתיק</button>
-        </div>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>מניה</th><th>כמות</th><th>מחיר קנייה</th><th>מחיר נוכחי</th><th>שווי</th><th>רווח/הפסד</th><th>מחיקה</th>
-                    </tr>
-                </thead>
-                <tbody id="portfolioBody"></tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4"><b>סה"כ שווי תיק:</b></td>
-                        <td id="totalValue" style="font-weight:bold">$0.00</td>
-                        <td id="totalPL"></td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </section>
-</div>
+        <!-- Portfolio Section -->
+        <section class="card">
+            <h2 class="section-title"><i class="fas fa-briefcase"></i> התיק האישי שלי</h2>
+            
+            <div class="input-group" style="background: var(--input-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <input type="text" id="pTicker" placeholder="סימול (למשל: TSLA)">
+                <input type="number" id="pPrice" placeholder="מחיר קנייה ($)">
+                <input type="number" id="pQty" placeholder="כמות יחידות">
+                <button class="action-btn" onclick="addToPortfolio()">
+                    <i class="fas fa-save"></i> הוסף פוזיציה
+                </button>
+            </div>
 
-<script>
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || ['NASDAQ:AAPL'];
-    let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
-    let marketPrices = {};
-    let theme = localStorage.getItem('theme') || 'light';
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>מניה</th>
+                            <th>כמות</th>
+                            <th>מחיר קנייה</th>
+                            <th>מחיר שוק (עדכון ידני)</th>
+                            <th>שווי כולל</th>
+                            <th>רווח/הפסד</th>
+                            <th>פעולות</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioBody"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">סה"כ שווי תיק השקעות:</td>
+                            <td id="totalValue" style="direction: ltr; text-align: right;">$0.00</td>
+                            <td id="totalPL" style="direction: ltr; text-align: right;"></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </section>
+    </div>
 
-    function toggleTheme() {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        renderWatchlist();
-    }
-
-    function addTicker() {
-        const val = document.getElementById('tickerInput').value.toUpperCase();
-        if(val && !watchlist.includes(val)) {
-            watchlist.push(val);
-            save(); renderWatchlist();
+    <script>
+        // Data Initialization
+        let watchlist = JSON.parse(localStorage.getItem('watchlist')) || ['NASDAQ:AAPL', 'NASDAQ:NVDA'];
+        let portfolio = JSON.parse(localStorage.getItem('portfolio')) || [];
+        let marketPrices = JSON.parse(localStorage.getItem('marketPrices')) || {};
+        
+        // Theme Logic
+        let theme = localStorage.getItem('theme') || 'light';
+        const themeIcon = document.querySelector('.theme-toggle i');
+        
+        function updateThemeUI() {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
-    }
 
-    function removeTicker(t) {
-        watchlist = watchlist.filter(x => x !== t);
-        save(); renderWatchlist();
-    }
-
-    function renderWatchlist() {
-        const grid = document.getElementById('tickerGrid');
-        grid.innerHTML = '';
-        watchlist.forEach(s => {
-            const div = document.createElement('div');
-            div.className = 'ticker-card-wrapper';
-            div.innerHTML = `<button class="delete-btn" onclick="removeTicker('${s}')">×</button>
-                <div class="tradingview-widget-container">
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
-                    {"symbol": "${s}", "width": "100%", "colorTheme": "${theme}", "isTransparent": false, "locale": "he_IL"}
-                    <\/script>
-                </div>`;
-            grid.appendChild(div);
-            // הטענה מחדש של הסקריפטים של הווידג'טים
-            const script = div.querySelector('script');
-            const newScript = document.createElement('script');
-            newScript.src = script.src;
-            newScript.innerHTML = script.innerHTML;
-            div.querySelector('.tradingview-widget-container').appendChild(newScript);
-        });
-    }
-
-    function addToPortfolio() {
-        const ticker = document.getElementById('pTicker').value.toUpperCase();
-        const price = parseFloat(document.getElementById('pPrice').value);
-        const qty = parseFloat(document.getElementById('pQty').value);
-        if(ticker && price && qty) {
-            portfolio.push({ id: Date.now(), ticker, price, qty });
-            if(!marketPrices[ticker]) marketPrices[ticker] = price;
-            save(); renderPortfolio();
+        function toggleTheme() {
+            theme = theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', theme);
+            updateThemeUI();
+            renderWatchlist(); // Re-render widgets to match theme
         }
-    }
 
-    function updatePrice(t, p) {
-        marketPrices[t] = parseFloat(p);
-        renderPortfolio();
-    }
+        // --- Watchlist Logic (TradingView Widgets) ---
+        function addTicker() {
+            const input = document.getElementById('tickerInput');
+            const val = input.value.trim().toUpperCase();
+            if(val && !watchlist.includes(val)) {
+                watchlist.push(val);
+                save(); 
+                renderWatchlist();
+                input.value = '';
+            }
+        }
 
-    function renderPortfolio() {
-        const body = document.getElementById('portfolioBody');
-        body.innerHTML = '';
-        let totalVal = 0, totalCost = 0;
-        portfolio.forEach(p => {
-            const curr = marketPrices[p.ticker] || p.price;
-            const val = curr * p.qty;
-            const cost = p.price * p.qty;
-            const pl = val - cost;
-            totalVal += val; totalCost += cost;
-            body.innerHTML += `<tr>
-                <td><b>${p.ticker}</b></td><td>${p.qty}</td><td>$${p.price}</td>
-                <td><input type="number" class="table-input" value="${curr}" onchange="updatePrice('${p.ticker}', this.value)"></td>
-                <td>$${val.toFixed(2)}</td>
-                <td class="${pl>=0?'text-green':'text-red'}">$${pl.toFixed(2)} (${((pl/cost)*100).toFixed(1)}%)</td>
-                <td><button onclick="removePortfolio(${p.id})" style="background:none; color:gray">🗑️</button></td>
-            </tr>`;
-        });
-        document.getElementById('totalValue').innerText = `$${totalVal.toFixed(2)}`;
-        const tPL = totalVal - totalCost;
-        document.getElementById('totalPL').innerHTML = `<span class="${tPL>=0?'text-green':'text-red'}">$${tPL.toFixed(2)}</span>`;
-    }
+        function removeTicker(t) {
+            watchlist = watchlist.filter(x => x !== t);
+            save(); 
+            renderWatchlist();
+        }
 
-    function removePortfolio(id) {
-        portfolio = portfolio.filter(p => p.id !== id);
-        save(); renderPortfolio();
-    }
+        function renderWatchlist() {
+            const grid = document.getElementById('tickerGrid');
+            grid.innerHTML = '';
+            
+            watchlist.forEach(symbol => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'ticker-card-wrapper';
+                
+                // Add Delete Button
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.innerHTML = '<i class="fas fa-times"></i>';
+                delBtn.onclick = () => removeTicker(symbol);
+                wrapper.appendChild(delBtn);
 
-    function save() {
-        localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        localStorage.setItem('portfolio', JSON.stringify(portfolio));
-    }
+                // Add TradingView Container
+                const container = document.createElement('div');
+                container.className = 'tradingview-widget-container';
+                wrapper.appendChild(container);
 
-    window.onload = () => {
-        document.documentElement.setAttribute('data-theme', theme);
-        renderWatchlist();
-        renderPortfolio();
-    };
-</script>
+                // Create Script Element Manually
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+                script.async = true;
+                script.innerHTML = JSON.stringify({
+                    "symbol": symbol,
+                    "width": "100%",
+                    "colorTheme": theme,
+                    "isTransparent": theme === 'dark', // Transparent looks better in dark mode
+                    "locale": "he_IL"
+                });
+
+                container.appendChild(script);
+                grid.appendChild(wrapper);
+            });
+        }
+
+        // --- Portfolio Logic ---
+        function addToPortfolio() {
+            const tInput = document.getElementById('pTicker');
+            const pInput = document.getElementById('pPrice');
+            const qInput = document.getElementById('pQty');
+
+            const ticker = tInput.value.toUpperCase().trim();
+            const price = parseFloat(pInput.value);
+            const qty = parseFloat(qInput.value);
+
+            if(ticker && price && qty) {
+                portfolio.push({ id: Date.now(), ticker, price, qty });
+                
+                // If we don't have a market price yet, assume breakeven for now
+                if(!marketPrices[ticker]) marketPrices[ticker] = price;
+                
+                save(); renderPortfolio();
+                
+                // Clear inputs
+                tInput.value = '';
+                pInput.value = '';
+                qInput.value = '';
+            }
+        }
+
+        function updatePrice(ticker, newPrice) {
+            marketPrices[ticker] = parseFloat(newPrice);
+            save(); // Save market prices too
+            renderPortfolio();
+        }
+
+        function removePortfolio(id) {
+            if(confirm('האם למחוק פוזיציה זו?')) {
+                portfolio = portfolio.filter(p => p.id !== id);
+                save(); renderPortfolio();
+            }
+        }
+
+        function renderPortfolio() {
+            const body = document.getElementById('portfolioBody');
+            body.innerHTML = '';
+            
+            let totalVal = 0;
+            let totalCost = 0;
+
+            if (portfolio.length === 0) {
+                body.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">התיק ריק כרגע. הוסף מניות למעלה.</td></tr>';
+                document.getElementById('totalValue').innerText = '$0.00';
+                document.getElementById('totalPL').innerText = '';
+                return;
+            }
+
+            portfolio.forEach(p => {
+                const currentPrice = marketPrices[p.ticker] || p.price;
+                const totalValue = currentPrice * p.qty;
+                const costBasis = p.price * p.qty;
+                const pl = totalValue - costBasis;
+                const plPercent = ((pl / costBasis) * 100);
+
+                totalVal += totalValue;
+                totalCost += costBasis;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:700;">${p.ticker}</td>
+                    <td>${p.qty}</td>
+                    <td>$${p.price.toLocaleString()}</td>
+                    <td>
+                        <input type="number" class="table-input" 
+                               value="${currentPrice}" 
+                               onchange="updatePrice('${p.ticker}', this.value)"
+                               step="0.01">
+                    </td>
+                    <td style="font-weight:600;">$${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td class="${pl >= 0 ? 'text-green' : 'text-red'}" style="direction:ltr; text-align:right;">
+                        ${pl >= 0 ? '+' : ''}$${pl.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} 
+                        <span style="font-size:0.85em; opacity:0.8;">(${pl >= 0 ? '+' : ''}${plPercent.toFixed(2)}%)</span>
+                    </td>
+                    <td class="row-actions">
+                        <button onclick="removePortfolio(${p.id})" title="מחיקה"><i class="far fa-trash-alt"></i></button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+
+            // Update Totals
+            const totalPL = totalVal - totalCost;
+            const totalPLPercent = totalCost > 0 ? (totalPL / totalCost) * 100 : 0;
+            
+            document.getElementById('totalValue').innerText = `$${totalVal.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            
+            const plElement = document.getElementById('totalPL');
+            plElement.className = totalPL >= 0 ? 'text-green' : 'text-red';
+            plElement.innerHTML = `${totalPL >= 0 ? '+' : ''}$${totalPL.toLocaleString(undefined, {minimumFractionDigits: 2})} (${totalPL >= 0 ? '+' : ''}${totalPLPercent.toFixed(2)}%)`;
+        }
+
+        function save() {
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            localStorage.setItem('portfolio', JSON.stringify(portfolio));
+            localStorage.setItem('marketPrices', JSON.stringify(marketPrices));
+        }
+
+        // Init
+        window.onload = () => {
+            updateThemeUI();
+            renderWatchlist();
+            renderPortfolio();
+        };
+    </script>
 </body>
 </html>
